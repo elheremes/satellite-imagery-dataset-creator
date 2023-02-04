@@ -15,20 +15,25 @@ from PySide2.QtGui import (
     QCursor
 )
 
-# from src.interface import (
-#     VideoItem
-# )
+from src.interface import (
+    ProcessingItem
+)
 
-# from src.controller import (
-#     VideoProcessController,
-#     DataController
-# )
+from src.controller import (
+    ProcessController
+)
 
 
 class MainWindow(QWidget):
+    """
+    Tela principal da interface do programa.
+    """
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
+
+        self.raster1_name = None
+        self.raster2_name = None
 
         self.settings()
         self.create_widgets()
@@ -36,7 +41,7 @@ class MainWindow(QWidget):
         self.add_widgets()
 
         # self.data_controller = DataController()
-        # self.process_controller = VideoProcessController()
+        self.process_controller = ProcessController()
 
         self.load_processed_videos()
 
@@ -46,27 +51,39 @@ class MainWindow(QWidget):
 
     def create_widgets(self):
         # Butões
-        self.btn_load_video = QPushButton("Carregar Vídeo")
-        # define nome especificos para o objeto com o intuito de personalizar a interface
-        self.btn_load_video.setObjectName("loadVideoButton")
-        self.btn_load_video.setFixedWidth(200)
-        self.btn_load_video.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_load_video_1 = QPushButton("Carregar Raster 1")
+        self.btn_load_video_1.setObjectName("loadVideoButton")
+        self.btn_load_video_1.setFixedWidth(200)
+        self.btn_load_video_1.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.btn_load_video_2 = QPushButton("Carregar Raster 2")
+        self.btn_load_video_2.setObjectName("loadVideoButton")
+        self.btn_load_video_2.setFixedWidth(200)
+        self.btn_load_video_2.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.btn_process = QPushButton("Processar")
+        self.btn_process.setObjectName("loadVideoButton")
+        self.btn_process.setFixedWidth(200)
+        self.btn_process.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_process.hide()
 
         # Sinais
-        self.btn_load_video.clicked.connect(self.add_new_video)
+        self.btn_load_video_1.clicked.connect(self.add_raster_1)
+        self.btn_load_video_2.clicked.connect(self.add_raster_2)
+        self.btn_process.clicked.connect(self.add_process_to_queue)
 
     def set_layout(self):
         self.scroll = QScrollArea()
         self.scroll.setObjectName("videosContainer")
         self.widget = QWidget()
 
-        self.videos_layout = QVBoxLayout()
-        self.videos_layout.setMargin(0)
-        self.videos_layout.setSpacing(0)
-        self.videos_layout.setContentsMargins(0, 0, 0, 0)
-        self.videos_layout.setAlignment(Qt.AlignTop)
+        self.process_layout = QVBoxLayout()
+        self.process_layout.setMargin(0)
+        self.process_layout.setSpacing(0)
+        self.process_layout.setContentsMargins(0, 0, 0, 0)
+        self.process_layout.setAlignment(Qt.AlignTop)
 
-        self.widget.setLayout(self.videos_layout)
+        self.widget.setLayout(self.process_layout)
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll.setWidgetResizable(True)
@@ -82,10 +99,48 @@ class MainWindow(QWidget):
         self.setLayout(main_layout)
 
     def add_widgets(self):
-        self.buttons_layout.addWidget(self.btn_load_video)
+        self.buttons_layout.addWidget(self.btn_load_video_1)
+        self.buttons_layout.addWidget(self.btn_load_video_2)
+        self.buttons_layout.addWidget(self.btn_process)
 
-    def add_new_video(self):
-        pass
+    def add_raster_1(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self, "Selecione um raster", filter="TIFF(*.tiff *.tif)")
+
+        if filename == '':
+            return
+
+        self.raster1_name = filename
+
+        self.check_process_button()
+
+    def add_raster_2(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self, "Selecione um raster", filter="TIFF(*.tiff *.tif)")
+
+        if filename == '':
+            return
+
+        self.raster2_name = filename
+
+        self.check_process_button()
+
+    def check_process_button(self):
+        if self.raster1_name is not None:
+            if self.raster2_name is not None:
+                self.btn_process.show()
+
+    def add_process_to_queue(self):
+        process = ProcessingItem(
+            raster1_name=self.raster1_name, raster2_name=self.raster2_name, delete_event=None)
+
+        self.raster1_name = None
+        self.raster2_name = None
+
+        self.btn_process.hide()
+
+        self.process_layout.addWidget(process)
+        self.process_controller.append_to_queue(process)
 
     def load_processed_videos(self):
         pass
