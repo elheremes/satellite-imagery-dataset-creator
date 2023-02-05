@@ -38,6 +38,24 @@ QPushButton#loadVideoButton:pressed {
     background-color: #029AAB;
 }
 
+QPushButton#processVideoButton:disabled {
+    background-color: #cecfd0;
+    width: 70px;
+    height: 50px;
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+QPushButton#processVideoButton:enabled {
+    background-color: #015A63;
+    width: 70px;
+    height: 50px;
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
 QPushButton#statisticButton:enabled {
     background-color: #015A63;
     color: #FFF;
@@ -54,6 +72,13 @@ QPushButton#playButton:enabled {
 
 QPushButton#trashButton:enabled {
     background-color: #ff4a4a;
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 19px;
+}
+
+QPushButton#trashButton:disabled {
+    background-color: #a9a9a9a9;
     color: #FFF;
     font-weight: bold;
     border-radius: 19px;

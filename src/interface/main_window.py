@@ -61,11 +61,11 @@ class MainWindow(QWidget):
         self.btn_load_video_2.setFixedWidth(200)
         self.btn_load_video_2.setCursor(QCursor(Qt.PointingHandCursor))
 
-        self.btn_process = QPushButton("Processar")
-        self.btn_process.setObjectName("loadVideoButton")
+        self.btn_process = QPushButton("Adicionar a Fila")
+        self.btn_process.setObjectName("processVideoButton")
         self.btn_process.setFixedWidth(200)
         self.btn_process.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_process.hide()
+        self.btn_process.setDisabled(True)
 
         # Sinais
         self.btn_load_video_1.clicked.connect(self.add_raster_1)
@@ -101,6 +101,7 @@ class MainWindow(QWidget):
     def add_widgets(self):
         self.buttons_layout.addWidget(self.btn_load_video_1)
         self.buttons_layout.addWidget(self.btn_load_video_2)
+        self.buttons_layout.addStretch()
         self.buttons_layout.addWidget(self.btn_process)
 
     def add_raster_1(self):
@@ -128,16 +129,16 @@ class MainWindow(QWidget):
     def check_process_button(self):
         if self.raster1_name is not None:
             if self.raster2_name is not None:
-                self.btn_process.show()
+                self.btn_process.setDisabled(False)
 
     def add_process_to_queue(self):
         process = ProcessingItem(
-            raster1_name=self.raster1_name, raster2_name=self.raster2_name, delete_event=None)
+            raster1_name=self.raster1_name, raster2_name=self.raster2_name, folder='tmp', delete_event=None)
 
         self.raster1_name = None
         self.raster2_name = None
 
-        self.btn_process.hide()
+        self.btn_process.setDisabled(True)
 
         self.process_layout.addWidget(process)
         self.process_controller.append_to_queue(process)

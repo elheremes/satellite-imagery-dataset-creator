@@ -43,6 +43,9 @@ class ProcessController:
 
     def process_video(self, progress_callback):
         process = self.queue[0]
+
+        process.disable_trash_btn()
+
         process.start_processing()
 
         res1 = get_spatial_resolution(process.raster1_name)
@@ -73,10 +76,12 @@ class ProcessController:
         progress_callback.emit(50)
 
         generate_image_slices(overlap_1, overlap_2, res1, res2,
-                              lr_size=128, save_dir='/home/pedropeter/Documentos/tmp')
+                              lr_size=128, save_dir=process.folder)
 
         process.update_progress(100)
 
         self.register_end_process()
 
-        # process.end_processing(None)
+        process.end_processing(None)
+
+        process.enable_trash_btn()

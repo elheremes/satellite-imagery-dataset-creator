@@ -1,3 +1,5 @@
+from showinfm import show_in_file_manager
+
 from PySide2.QtWidgets import (
     QWidget,
     QPushButton,
@@ -21,14 +23,14 @@ from PySide2.QtGui import (
 
 class ProcessingItem(QWidget):
 
-    def __init__(self, delete_event, parent=None, raster1_name=None, raster2_name=None, processed=False, data={}):
+    def __init__(self, delete_event, raster1_name, raster2_name, folder, processed=False, parent=None):
         super(ProcessingItem, self).__init__(parent)
 
         self.delete_event = delete_event
         self.processed_status = processed
         self.raster1_name = raster1_name
         self.raster2_name = raster2_name
-        self.processing_data = data
+        self.folder = folder
 
         self.create_widgets()
         self.set_layout()
@@ -47,7 +49,7 @@ class ProcessingItem(QWidget):
         self.raster2_name_label.setObjectName("videoLabel")
 
         self.statistic_btn = QPushButton()
-        self.statistic_btn.setIcon(QIcon("./resources/statistic.png"))
+        self.statistic_btn.setIcon(QIcon("./resources/folder.png"))
         self.statistic_btn.setIconSize(QSize(20, 20))
         self.statistic_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.statistic_btn.setDisabled(True)
@@ -66,14 +68,8 @@ class ProcessingItem(QWidget):
         self.progress_bar = QProgressBar()
         self.progress_bar.hide()
 
-        # self.trash_btn.clicked.connect(self.delete_element)
-        # self.statistic_btn.clicked.connect(self.open_results)
-
-    def mousePressEvent(self, event):
-        pass
-
-        # if len(self.video_data) != 0:
-        #     self.open_results()
+        self.trash_btn.clicked.connect(self.delete_element)
+        self.statistic_btn.clicked.connect(self.open_results)
 
     def set_layout(self):
         container = QFrame()
@@ -96,27 +92,13 @@ class ProcessingItem(QWidget):
         self.video_layout.addWidget(self.trash_btn, 0, 4)
 
     def delete_element(self):
-        pass
-        # if len(self.video_data) != 0:
-        #     self.delete_event(self.video_data["name"].split('/')[-1])
-        # self.setParent(None)
+        self.setParent(None)
 
     def processed_video(self):
-        pass
-
-        # self.statistic_btn.setDisabled(False)
-
-    def set_data(self, data: dict):  # TODO: think in a Model
-        pass
-
-        # self.video_data = data
+        self.statistic_btn.setDisabled(False)
 
     def open_results(self):
-        pass
-
-        # self.results_window = ResultsWindow(self.video_data)
-        # self.results_window.setWindowModality(Qt.ApplicationModal)
-        # self.results_windo2w.show()
+        show_in_file_manager(self.folder)
 
     def start_processing(self):
         self.progress_bar.setValue(0)
@@ -125,7 +107,12 @@ class ProcessingItem(QWidget):
     def end_processing(self, data):
         self.progress_bar.hide()
         self.statistic_btn.setDisabled(False)
-        # self.set_data(data)
 
     def update_progress(self, value):
         self.progress_bar.setValue(value)
+
+    def disable_trash_btn(self):
+        self.trash_btn.setDisabled(True)
+
+    def enable_trash_btn(self):
+        self.trash_btn.setDisabled(False)

@@ -5,8 +5,12 @@ from src.styles import app_styles
 from src.interface import MainWindow
 from src.imgproc import intersect_rasters, reproject_raster, get_spatial_resolution, generate_image_slices
 
+from src.imgproc import create_folder
+
 
 def main(args):
+    create_folder('tmp')
+
     root = QApplication(args)
 
     app = MainWindow()
