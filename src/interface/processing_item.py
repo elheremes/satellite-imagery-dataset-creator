@@ -1,3 +1,17 @@
+"""
+[AUTOR]
+    Pedro Thiago Cutrim dos Santos
+    Github: @elheremes
+
+[DESCRIÇÃO]
+    Script responsável pela visualização do item de processamento
+    na interface.
+
+    Cada item de processamento mostra o status (%) do processamento
+    e se já finalizado o acesso a pasta de resultados. Também permite
+    a exclusão desse processo no histórico.
+"""
+
 from showinfm import show_in_file_manager
 
 from PySide2.QtWidgets import (

@@ -1,12 +1,36 @@
+"""
+[AUTOR]
+    Pedro Thiago Cutrim dos Santos
+    Github: @elheremes
+
+[DESCRIÇÃO]
+    Script responsável por realizar e salvar o janelamento
+    das interseções de alta e baixa resolução dos rasters.
+"""
+
 from PIL import Image
 import numpy as np
 
 from src.imgproc import get_spatial_resolution, create_folder
 
 
-def generate_image_slices(ar1, ar2, res1, res2, lr_size=128, save_dir="tmp/lr"):
+def generate_image_slices(ar1, ar2, res1, res2, lr_size=128, save_dir="tmp"):
     """
-    Gera os slices dos arrays numpy e salva em formato de imagens
+    Realiza o janelamento dos arrays numpy e salva em
+    formato de imagens png, separando-os em alta resolução
+    e baixa resolução através do fator calculado entre as
+    resoluções espaciais de ambos rasters.
+
+    [ARGUMENTOS]
+        ar1: numpy array contendo os valores da interseção do
+             primeiro raster.
+        ar2: numpy array contendo os valores da interseção do
+             segundo raster.
+        res1: resolução espacial em inteiro do primeiro raster.
+        res2: resolução espacial em inteiro do segundo raster.
+        lr_size: resolução (lr_size x lr_size) da imagem de baixa
+                 qualidade.
+        save_dir: diretório onde serão salvos os resultados.
     """
 
     images_per_axis = int(ar1.shape[0] / lr_size)

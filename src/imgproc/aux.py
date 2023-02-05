@@ -1,11 +1,33 @@
+"""
+[AUTOR]
+    Pedro Thiago Cutrim dos Santos
+    Github: @elheremes
+
+[DESCRIÇÃO]
+    Script responsável por conter funções auxiliares para
+    utlização de ambos backend e frontend do programa.
+"""
+
 import rasterio
 import os
-from rasterio.warp import calculate_default_transform, reproject, Resampling
+
+from rasterio.warp import (
+    calculate_default_transform,
+    reproject,
+    Resampling
+)
 
 
 def reproject_raster(raster, dst_crs):
     """
     Reprojeta o CRS original do raster para o CRS informado.
+
+    [ARGUMENTOS]
+        raster: DatasetReader do raster carregado pelo rasterio.
+        dst_crs: string informando o sistema de coordenadas desejado.
+
+    [RETORNO]
+        Retorna um DatasetReader convertido para o CRS desejado.
     """
 
     transform, width, height = calculate_default_transform(
@@ -38,7 +60,14 @@ def reproject_raster(raster, dst_crs):
 
 def get_spatial_resolution(raster_path):
     """
-    Pega a resolução espacial do raster informado.
+    Obtém a resolução espacial do raster informado.
+
+    [ARGUMENTOS]
+        raster_path: caminho para o arquivo raster.
+
+    [RETORNO]
+        Retorna em inteiro a resolução espacial do
+        raster (em metros).
     """
 
     with rasterio.open(raster_path) as raster:
@@ -46,5 +75,14 @@ def get_spatial_resolution(raster_path):
 
 
 def create_folder(path):
+    """
+    Verifica se a pasta existe e, caso não, realiza
+    a criação do diretório.
+
+    [ARGUMENTOS]
+        path: caminho do diretório a ser checado ou
+              criado.
+    """
+
     if not os.path.exists(path):
         os.makedirs(path)

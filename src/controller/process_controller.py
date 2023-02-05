@@ -1,9 +1,22 @@
+"""
+[AUTOR]
+    Pedro Thiago Cutrim dos Santos
+    Github: @elheremes
+
+[DESCRIÇÃO]
+    Controlador responsável pela comunicação dos
+    processos de backend e a interface.
+
+    Este script faz a gestão da fila de processos,
+    salvamento de arquivos e criação de threads para
+    o programa.
+"""
+
+
 import numpy as np
 from PIL import Image
 
-from PySide2.QtCore import (
-    QThreadPool,
-)
+from PySide2.QtCore import QThreadPool
 
 from src.imgproc import (
     intersect_rasters,
@@ -18,6 +31,22 @@ from src.controller import (
 
 
 class ProcessController:
+    """
+    Classe para o controlador de processos.
+
+    Gerencia a fila de processos enviados pelo usuário,
+    escolhe qual processo deve ser executado e salva os
+    aruivos de resultado.
+
+    [ATRIBUTOS]
+        busy: booleano que informa se o controlador está
+              executando um processo ou não.
+        queue: lista com a fila de processos não ainda
+               executados.
+        thread_pool: QThreadPool para criação de threads de
+                     processo para cada elemento.
+    """
+
     def __init__(self):
         self.busy = False
         self.queue = []

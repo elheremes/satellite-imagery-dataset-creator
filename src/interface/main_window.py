@@ -1,3 +1,15 @@
+"""
+[AUTOR]
+    Pedro Thiago Cutrim dos Santos
+    Github: @elheremes
+
+[DESCRIÇÃO]
+    Script responsável pela criação da tela principal do programa.
+
+    A tela é responsável pelo carregamento dos rasters, visualização
+    da fila e do status dos processos e acesso aos resultados.
+"""
+
 from PySide2.QtWidgets import (
     QWidget,
     QPushButton,
@@ -145,22 +157,3 @@ class MainWindow(QWidget):
 
     def load_processed_videos(self):
         pass
-
-    # def add_new_video(self):
-    #     filename, _ = QFileDialog.getOpenFileName(
-    #         self, "Selecione um vídeo de cirurgia artroscópica", filter="VID(*.mpg *.mp4 *.mpeg *.mov *.wvm *.flv *.avi *.mkv)")
-    #     if filename == '':
-    #         return
-    #     video = VideoItem(video_name=filename,
-    #                       delete_event=self.data_controller.delete_data_file)
-    #     self.videos_layout.addWidget(video)
-
-    #     self.process_controller.append_to_queue(
-    #         video)  # realiza a chamada de processamento
-
-    # def load_processed_videos(self):
-    #     videos = self.data_controller.load_data()
-    #     for v in videos:
-    #         video = VideoItem(
-    #             video_name=v["name"], delete_event=self.data_controller.delete_data_file, processed=True, data=v)
-    #         self.videos_layout.addWidget(video)

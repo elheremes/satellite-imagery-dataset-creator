@@ -1,10 +1,13 @@
-'''
-#015A63
-#1EE6FC
-#049FB0
-#632A00
-#B04D04
-'''
+"""
+[AUTOR]
+    Pedro Thiago Cutrim dos Santos
+    Github: @elheremes
+
+[DESCRIÇÃO]
+    Script responsável por manter a estilização das janelas
+    do programa em uma string através da padronização exigida
+    pelo PySide2.
+"""
 
 stylesheet = """
 
