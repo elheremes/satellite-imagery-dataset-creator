@@ -5,7 +5,7 @@
 
 [DESCRIÇÃO]
     Script responsável pela inicialização do programa, faz as
-    chamadas básicas para iniciar a interface QT utilizando a
+    chamadas básicas para iniciar a interface Qt utilizando a
     biblioteca PySide2.
 """
 

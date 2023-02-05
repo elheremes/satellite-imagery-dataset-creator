@@ -14,7 +14,7 @@ import numpy as np
 from src.imgproc import get_spatial_resolution, create_folder
 
 
-def generate_image_slices(ar1, ar2, res1, res2, lr_size=128, save_dir="tmp"):
+def generate_image_slices(ar1, ar2, res1, res2, save_dir, lr_size=128):
     """
     Realiza o janelamento dos arrays numpy e salva em
     formato de imagens png, separando-os em alta resolução
@@ -39,6 +39,7 @@ def generate_image_slices(ar1, ar2, res1, res2, lr_size=128, save_dir="tmp"):
 
     count_slice = 1
 
+    create_folder(save_dir)
     create_folder(save_dir + "/lr")
     create_folder(save_dir + "/hr")
 

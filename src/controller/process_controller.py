@@ -12,7 +12,7 @@
     o programa.
 """
 
-
+import os
 import numpy as np
 from PIL import Image
 
@@ -53,10 +53,26 @@ class ProcessController:
         self.thread_pool = QThreadPool()
 
     def append_to_queue(self, process_item):
+        """
+        Adiciona o item a fila processamento.
+
+        [ARGUMENTOS]
+            process_item: classe ProcessingItem
+                          com informações do processo.
+        """
+
         self.queue.append(process_item)
         self.check_queue()
 
     def check_queue(self):
+        """
+        Verifica o status da fila, caso o controlador
+        já esteja com um processo em execução ou a fila
+        de processamento esteja vazia, nada acontece. Caso
+        contrário, uma thread de execução é criada e o status
+        do controlador muda para ocupado.
+        """
+
         if not self.busy and len(self.queue) > 0:
             self.busy = True
             worker = Worker(self.process_video)
@@ -66,11 +82,25 @@ class ProcessController:
             self.thread_pool.start(worker)
 
     def register_end_process(self):
+        """
+        Remove o processo da lista, muda o status do controlador
+        para disponível e faz uma nova verificação na fila.
+        """
+
         self.queue.pop(0)
         self.busy = False
         self.check_queue()
 
     def process_video(self, progress_callback):
+        """
+        Realiza a intersecção dos rasters e gera o janelamento
+        de imagens dos resultados.
+
+        [ARGUMENTOS]
+           progress_callback: função de callback para atualização
+                              de progresso na interface.
+        """
+
         process = self.queue[0]
 
         process.disable_trash_btn()
@@ -82,6 +112,9 @@ class ProcessController:
 
         overlap_1, overlap_2, bands = intersect_rasters(
             process.raster1_name, process.raster2_name)
+
+        os.remove('tmp/temporary.tif')
+        os.remove('tmp/temporary.tif.aux.xml')
 
         progress_callback.emit(40)
 
@@ -105,7 +138,11 @@ class ProcessController:
         progress_callback.emit(50)
 
         generate_image_slices(overlap_1, overlap_2, res1, res2,
-                              lr_size=128, save_dir=process.folder)
+                              process.folder, lr_size=128)
+
+        with open('{}/names.txt'.format(process.folder), 'w') as f:
+            f.write(process.raster1_name + '\n')
+            f.write(process.raster2_name + '\n')
 
         process.update_progress(100)
 

@@ -42,7 +42,7 @@ def reproject_raster(raster, dst_crs):
         'height': height
     })
 
-    with rasterio.open('/home/pedropeter/Documentos/teste.tif', 'w', **kwargs) as dst:
+    with rasterio.open('tmp/temporary.tif', 'w', **kwargs) as dst:
         for i in range(1, raster.count + 1):
             reproject(
                 source=rasterio.band(raster, i),
@@ -55,7 +55,7 @@ def reproject_raster(raster, dst_crs):
 
     raster.close()
 
-    return rasterio.open('/home/pedropeter/Documentos/teste.tif')
+    return rasterio.open('tmp/temporary.tif')
 
 
 def get_spatial_resolution(raster_path):
@@ -86,3 +86,34 @@ def create_folder(path):
 
     if not os.path.exists(path):
         os.makedirs(path)
+
+
+def get_list_of_process_ids():
+    """
+    Lista todos os ids de processos já executados e
+    não excluídos pelos usuários na pasta temporária.
+
+    [RETORNO]
+        Uma lista com os ids em inteiro dos processos
+        salvos.
+    """
+
+    return [int(name)
+            for name in os.listdir("tmp/")]
+
+
+def get_new_id():
+    """
+    Verifica o id do último processo salvo e retorna
+    o próximo disponível.
+
+    [RETORNO]
+        Inteiro com o valor do próximo id disponível.
+    """
+
+    created_ids = get_list_of_process_ids()
+
+    if len(created_ids) == 0:
+        return 1
+    else:
+        return max(created_ids) + 1
