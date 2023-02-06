@@ -114,7 +114,9 @@ class ProcessController:
             process.raster1_name, process.raster2_name)
 
         os.remove('tmp/temporary.tif')
-        os.remove('tmp/temporary.tif.aux.xml')
+
+        if os.path.isfile('tmp/temporary.tif.aux.xml'):
+            os.remove('tmp/temporary.tif.aux.xml')
 
         progress_callback.emit(40)
 
