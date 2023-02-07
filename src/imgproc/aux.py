@@ -99,7 +99,7 @@ def get_list_of_process_ids():
     """
 
     return [int(name)
-            for name in os.listdir("tmp/")]
+            for name in os.listdir("tmp/") if os.path.isdir(os.path.join("tmp/", name))]
 
 
 def get_new_id():
